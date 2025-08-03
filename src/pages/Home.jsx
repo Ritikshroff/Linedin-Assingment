@@ -114,7 +114,10 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-              <p className="mt-3 text-gray-700">{post.content}</p>
+              {/* <p className="mt-3 text-gray-700">{post.content}</p> */}
+              <p className="mt-3 text-gray-700 break-words whitespace-pre-line">
+                {post.content}
+              </p>
             </div>
           ))
         )}
