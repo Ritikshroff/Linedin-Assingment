@@ -10,7 +10,7 @@
 //   const fetchUserData = async () => {
 //     try {
 //       const res = await axios.get(
-//         `http://localhost:3000/api/users/${id}/posts`
+//         `https://linkedinbackend-zxet.onrender.com/api/users/${id}/posts`
 //       );
 //       setUser(res.data.user);
 //       setPosts(res.data.posts);
@@ -80,7 +80,7 @@ const UserProfile = () => {
   const fetchUserData = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/users/${id}/posts`
+        `https://linkedinbackend-zxet.onrender.com/api/users/${id}/posts`
       );
       setUser(res.data.user);
       setPosts(res.data.posts);

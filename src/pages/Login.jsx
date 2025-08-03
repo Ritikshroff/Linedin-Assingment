@@ -23,7 +23,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://linkedinbackend-zxet.onrender.com/api/auth/login",
         formData,
         {
           withCredentials: true, // 🛡️ In case you're using cookies/session later

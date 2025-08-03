@@ -36,7 +36,7 @@ const Profile = () => {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/posts/user/${userId}`,
+        `https://linkedinbackend-zxet.onrender.com/api/posts/user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -8,7 +8,9 @@ const Home = () => {
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/posts");
+      const res = await axios.get(
+        "https://linkedinbackend-zxet.onrender.com/api/posts"
+      );
       const postsArray = Array.isArray(res.data) ? res.data : res.data.posts;
       setPosts(postsArray.reverse());
     } catch (err) {
@@ -21,7 +23,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:3000/api/posts",
+        "https://linkedinbackend-zxet.onrender.com/api/posts",
         { content },
         {
           headers: {
