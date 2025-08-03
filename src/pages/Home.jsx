@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Shimmer from "../components/Shimmer";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchPosts = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(
         "https://linkedinbackend-zxet.onrender.com/api/posts"
@@ -15,6 +20,8 @@ const Home = () => {
       setPosts(postsArray.reverse());
     } catch (err) {
       console.error("Error fetching posts:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,9 +52,11 @@ const Home = () => {
 
       if (res.status === 201) {
         fetchPosts(); // Replace with real data after successful post
+        toast.success("Post published successfully!");
       }
     } catch (err) {
       console.error("Post failed", err);
+      toast.error("Failed to publish post!");
     }
   };
 
@@ -57,6 +66,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-gray-100 to-blue-50 p-4">
+      <ToastContainer position="top-right" autoClose={2000} />
       <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center rounded-2xl mb-6">
         <p className="text-2xl font-extrabold text-blue-600 tracking-wide">
           DevConnect
@@ -94,7 +104,13 @@ const Home = () => {
       </div>
 
       <div className="space-y-5">
-        {posts.length === 0 ? (
+        {loading ? (
+          <>
+            <Shimmer height={80} className="mb-4" />
+            <Shimmer height={80} className="mb-4" />
+            <Shimmer height={80} className="mb-4" />
+          </>
+        ) : posts.length === 0 ? (
           <div className="text-center text-gray-500 italic">
             No posts yet. Be the first to share your thoughts!
           </div>

@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -33,12 +35,12 @@ const Register = () => {
         "https://linkedinbackend-zxet.onrender.com/api/auth/register",
         formData
       );
-      console.log("✅ Registered:", res.data);
-      // Redirect to login or homepage
+      toast.success("Registration successful!");
       navigate("/login");
     } catch (err) {
       console.error("❌ Error:", err);
       setErrorMsg(err.response?.data?.message || "Registration failed");
+      toast.error(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -46,6 +48,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <ToastContainer position="top-right" autoClose={2000} />
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
         <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
           Create an Account

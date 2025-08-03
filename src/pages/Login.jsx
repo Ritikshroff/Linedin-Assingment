@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate(); // 📍 For redirecting after login
@@ -33,16 +35,19 @@ const Login = () => {
       if (res.data && res.data.token) {
         localStorage.setItem("token", res.data.token); // 🧠 Store token locally
         localStorage.setItem("user", JSON.stringify(res.data.user)); // <-- fix here
+        toast.success("Login successful!");
         navigate("/home"); // 🚀 Redirect to homepage
       }
     } catch (err) {
       console.error(err.response?.data?.message || err.message);
       setError(err.response?.data?.message || "Login failed. Try again.");
+      toast.error(err.response?.data?.message || "Login failed. Try again.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <ToastContainer position="top-right" autoClose={2000} />
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
         <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
           Welcome Back

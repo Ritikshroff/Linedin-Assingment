@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Shimmer from "../components/Shimmer";
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -22,6 +23,7 @@ const getInitials = (name) => {
 
 const Profile = () => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ const Profile = () => {
   }, []);
 
   const fetchUserPosts = async (userId) => {
+    setLoading(true);
     const token = localStorage.getItem("token");
     try {
       const res = await axios.get(
@@ -46,6 +49,8 @@ const Profile = () => {
       setPosts(res.data.reverse());
     } catch (error) {
       console.error("Error fetching posts:", error.response?.data || error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,7 +108,12 @@ const Profile = () => {
         </div>
 
         {/* Posts */}
-        {posts.length > 0 ? (
+        {loading ? (
+          <>
+            <Shimmer height={120} className="mb-6" />
+            <Shimmer height={120} className="mb-6" />
+          </>
+        ) : posts.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-6">
             {posts.map((post) => (
               <div

@@ -69,6 +69,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Shimmer from "../components/Shimmer";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -76,8 +77,10 @@ const UserProfile = () => {
 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchUserData = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(
         `https://linkedinbackend-zxet.onrender.com/api/users/${id}/posts`
@@ -86,12 +89,23 @@ const UserProfile = () => {
       setPosts(res.data.posts);
     } catch (err) {
       console.error("Failed to fetch user profile", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchUserData();
   }, [id]);
+
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gray-100 p-4">
+        <Shimmer height={80} className="mb-4" />
+        <Shimmer height={80} className="mb-4" />
+        <Shimmer height={80} className="mb-4" />
+      </div>
+    );
 
   if (!user)
     return <p className="text-center text-gray-600">Loading profile...</p>;
