@@ -22,6 +22,16 @@ const Home = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      // Optimistically add the new post to the top
+      const newPost = {
+        _id: Date.now().toString(), // Temporary ID
+        author: JSON.parse(localStorage.getItem("user")),
+        content,
+        createdAt: new Date().toISOString(),
+      };
+      setPosts((prev) => [newPost, ...prev]);
+      setContent("");
+
       const res = await axios.post(
         "https://linkedinbackend-zxet.onrender.com/api/posts",
         { content },
@@ -34,8 +44,7 @@ const Home = () => {
       );
 
       if (res.status === 201) {
-        setContent("");
-        fetchPosts();
+        fetchPosts(); // Replace with real data after successful post
       }
     } catch (err) {
       console.error("Post failed", err);
